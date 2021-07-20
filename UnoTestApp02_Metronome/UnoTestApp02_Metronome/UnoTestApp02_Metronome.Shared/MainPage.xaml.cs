@@ -24,7 +24,8 @@ namespace UnoTestApp02_Metronome
     {
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            text.Text = "Metronome";
         }
     }
 }

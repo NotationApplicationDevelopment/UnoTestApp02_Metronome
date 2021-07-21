@@ -1,8 +1,6 @@
-﻿using System;
-using Windows.UI.Xaml;
-
-namespace UnoTestApp02_Metronome.Wasm
+﻿namespace UnoTestApp02_Metronome.Wasm
 {
+
     public class Program
     {
         private static App _app;

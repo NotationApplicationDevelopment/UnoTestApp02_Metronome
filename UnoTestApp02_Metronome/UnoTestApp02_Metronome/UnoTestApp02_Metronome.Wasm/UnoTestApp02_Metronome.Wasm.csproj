@@ -18,8 +18,12 @@
     <UpToDateCheckInput Include="..\UnoTestApp02_Metronome.Shared\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="WasmScripts\Sound.js" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
     <EmbeddedResource Include="WasmScripts\AppManifest.js" />
+    <EmbeddedResource Include="WasmScripts\Sound.js" />
   </ItemGroup>
   <ItemGroup>
     <LinkerDescriptor Include="LinkerConfig.xml" />

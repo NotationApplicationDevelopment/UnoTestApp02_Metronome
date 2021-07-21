@@ -5,9 +5,60 @@
     xmlns:local="using:UnoTestApp02_Metronome"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="text" Text="Hello, world!" Margin="20" FontSize="30" />
-    </Grid>
+    <StackPanel HorizontalAlignment="Center" 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        
+        <TextBlock x:Name="title" 
+                   Text="Metronome" 
+                   Margin="0" 
+                   FontSize="30"
+                   TextAlignment="Center"/>
+        
+        <TextBlock x:Name="count" 
+                   Text="-" 
+                   Margin="0" 
+                   FontSize="10"
+                   TextAlignment="Center"/>
+        
+        <Canvas x:Name="canvas" Margin="10" Height="80" Width="210" Background="Black" >
+
+            <Ellipse x:Name="circleBack" Height="70" Width="5" Stroke="Gray" />
+            <Ellipse x:Name="circle" Height="50" Width="10" Fill="Green" Stroke="DarkGreen" />
+
+        </Canvas>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+            <TextBlock Text="bpm:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+            <muxc:NumberBox x:Name="bpm" Value="120" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="9999" MaxWidth="120"/>
+
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            
+            <TextBlock Text="time:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+            <muxc:NumberBox x:Name="maxCount" Value="4" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
+            <TextBlock Text="/" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+            <muxc:NumberBox x:Name="maxSubCount" Value="4"  Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
+
+        </StackPanel>
+        
+        <Button x:Name="mainButton"
+                ClickMode="Release"
+                Content="Start"
+                Margin="10" 
+                HorizontalAlignment="Center"/>
+
+        <TextBlock x:Name="bottomInfo" 
+                   Text="" 
+                   Margin="10" 
+                   FontSize="10"
+                   TextAlignment="Center"/>
+    </StackPanel>
 </Page>

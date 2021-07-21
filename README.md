@@ -22,3 +22,5 @@
 ・Uno PlatformのプロジェクトでFirebaseとGitHubを連携させるには？(おそらく、GitHub ActionsでMSBuildを使用？)
 
 ・wasmプロジェクトが、画面を激しく動かすとちらつく。うぜー
+
+・wasmバージョンが時折不安定。自作タイマーのせい？音声再生のせい？なぞである。

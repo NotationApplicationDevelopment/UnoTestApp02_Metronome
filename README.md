@@ -1,14 +1,22 @@
 # UnoTestApp02_Metronome
-This project is a learning project for Uno Platform & firebase hosting.
+このプロジェクトは、Uno Platform & firebase hostingの学習プロジェクトです。
 
 # Learned Points
-・After you edit shared XAML files, if you want to debug UWP projects in Uno Platform,  you should build the UWP projects before that.
+・共有XAMLファイルを編集した後、Uno PlatformでUWPプロジェクトをデバッグしたい場合は、その前にUWPプロジェクトをビルドする必要がある。
+
+・wasmプロジェクトでプラットフォーム固有の実装をする時、生成後のhtmlは直接いじれないので、jsでhtml要素を生成しなければならない。
+
+・wasmプロジェクトでjsを呼ぶのはめちゃ簡単。
+
+・wasmプロジェクトでjsからAssetのリソースにアクセスするには、js自身の所属フォルダを見つけて、そこから辿ればアクセスできる。(もっといい方法ないかなぁ？
+
+・標準のタイマーは精度が低いので、音楽を扱うなら自前実装などが必要。
 
 ・
 
 # Problems
-・I still can only run UWP & Wasm Projects. How do I run other projects?
+・UWPnとWasmのプロジェクトしか実行できない。他のプロジェクトを実行するには？？
 
-・How do I linking Firebase and GitHub in Uno Platform projects? (probably, I have to use MSBuild in GitHub Actions?)
+・Uno PlatformのプロジェクトでFirebaseとGitHubを連携させるには？(おそらく、GitHub ActionsでMSBuildを使用？)
 
-・
+・wasmプロジェクトが、画面を激しく動かすとちらつく。うぜー

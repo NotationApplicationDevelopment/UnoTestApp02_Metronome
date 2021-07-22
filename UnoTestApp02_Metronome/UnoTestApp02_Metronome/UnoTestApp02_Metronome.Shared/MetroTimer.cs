@@ -7,63 +7,72 @@ namespace UnoTestApp02_Metronome
 {
     public class MetroTimer
     {
-        readonly Stopwatch sw;
-        Task task;
-        private double interval;
+        private readonly Stopwatch sw;
+        private Task task;
+        private double ms;
+        private double rest;
 
-        public bool IsEnabled { get; private set; }
         public int TimeCount { get; private set; }
         public int MaxCount { get; private set; }
 
-        public event Action<MetroTimer> OnTick;
-        public event Action<MetroTimer, bool> OnUpdate;
-
-        public double Interval
-        {
-            get => interval; 
-        }
-
-        private void SetInterval(double bpm, int maxCount, int maxSubCount)
-        {
-            MaxCount = maxCount;
-            interval = 1000.0 * 240.0 / (bpm * maxSubCount);
-        }
-
-        public async Task SetIntervalAndResetAsync(double bpm, int maxCount, int maxSubCount)
-        {
-            SetInterval(bpm, maxCount, maxSubCount);
-            if (IsEnabled)
-            {
-                await StopAsync();
-                Start();
-            }
-        }
-
+        public double Interval { get; private set; }
         public TimeSpan Elapsed => sw.Elapsed;
+        public double Bar => sw.Elapsed.TotalMilliseconds / Interval / MaxCount;
+
+        public event Func<MetroTimer, Task> OnTick;
+        public event Func<MetroTimer, bool, Task> OnUpdate;
 
         public MetroTimer(double bpm, int maxCount, int maxSubCount)
         {
             TimeCount = 0;
             sw = new Stopwatch();
-            SetInterval(bpm, maxCount, maxSubCount);
+            SetTempo(bpm, maxCount, maxSubCount);
             return;
         }
 
+        private void SetTempo(double bpm, int maxCount, int maxSubCount)
+        {
+            MaxCount = maxCount;
+            Interval = 1000.0 * 240.0 / (bpm * maxSubCount);
+        }
+
+        public void SetTempoAndReset(double bpm, int maxCount, int maxSubCount)
+        {
+            SetTempo(bpm, maxCount, maxSubCount);
+            Restart();
+        }
+
+        private void CalcTimes()
+        {
+            ms = sw.Elapsed.TotalMilliseconds;
+            rest = Interval - ms % Interval;
+        }
+
+
         public void Start()
         {
-            if (task != null) { return; }
+            if (sw.IsRunning) { return; }
 
-            IsEnabled = true;
             task = OnTimerAsync();
         }
 
         public async Task StopAsync()
         {
-            if (task == null) { return; }
+            if (sw.IsRunning)
+            {
+                sw.Stop();
+                await task;
+            }
+        }
 
-            IsEnabled = false;
-            await task;
-            task = null;
+        public void Restart()
+        {
+            if (sw.IsRunning)
+            {
+                sw.Restart();
+                TimeCount = 0;
+                CalcTimes();
+            }
         }
 
         private async Task OnTimerAsync()
@@ -71,30 +80,24 @@ namespace UnoTestApp02_Metronome
             sw.Restart();
             TimeCount = 0;
 
-            while (IsEnabled)
+            while (sw.IsRunning)
             {
-                double ms = sw.Elapsed.TotalMilliseconds;
-                double rest = Interval - ms % Interval;
+                await OnTick?.Invoke(this);
 
-                while (IsEnabled && rest > 100.0)
+                CalcTimes();
+
+                while (sw.IsRunning && rest > 100.0)
                 {
-                    OnUpdate?.Invoke(this, false);
-
+                    await OnUpdate?.Invoke(this, false);
                     await Task.Delay(20);
 
-                    ms = sw.Elapsed.TotalMilliseconds;
-                    rest = Interval - ms % Interval;
+                    CalcTimes();
                 }
-                while (IsEnabled)
+
+                while (sw.IsRunning && sw.ElapsedMilliseconds < ms + rest)
                 {
-                    OnUpdate?.Invoke(this, true);
-
-                    if (sw.ElapsedMilliseconds >= ms + rest)
-                    {
-                        break;
-                    }
+                    await OnUpdate?.Invoke(this, true);
                     await Task.Delay(1);
-
                 }
 
                 TimeCount++;
@@ -103,13 +106,7 @@ namespace UnoTestApp02_Metronome
                 {
                     TimeCount = 0;
                 }
-
-                OnTick?.Invoke(this);
-
-
             }
-
-            sw.Stop();
         }
     }
 }

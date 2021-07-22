@@ -26,7 +26,7 @@ namespace UnoTestApp02_Metronome
 
         readonly SolidColorBrush circleFill = new SolidColorBrush(Colors.Green);
         readonly SolidColorBrush circleLine = new SolidColorBrush(Colors.DarkGreen);
-        readonly SolidColorBrush CanvasBack = new SolidColorBrush(Colors.LightGray);
+        readonly SolidColorBrush CanvasBack = new SolidColorBrush(Colors.Black);
 
         public MainPage()
         {
@@ -48,14 +48,14 @@ namespace UnoTestApp02_Metronome
 #endif
 
             bottomInfo.Text = platformData.PlatformName;
-            SetInterval();
+            SetTempo();
 
 
             Task.Run(async () => {
 
                 await Task.Delay(100);
 
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     SetCanvasPosition(circleBack, 0, 0);
                     SetCanvasPosition(circle, 0, 0);
@@ -63,6 +63,7 @@ namespace UnoTestApp02_Metronome
                     circle.Fill = circleFill;
                     circle.Stroke = circleLine;
                     canvas.Background = CanvasBack;
+
                 });
 
             });
@@ -79,59 +80,50 @@ namespace UnoTestApp02_Metronome
 
         private void Bpm_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            SetInterval();
+            SetTempo();
         }
 
         private void MaxCount_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
             sender.Value = double.IsNaN(sender.Value) ? 4 : sender.Value;
 
-            SetInterval();
+            SetTempo();
         }
 
-        private void SetInterval()
+        private void SetTempo()
         {
-            _ = timer.SetIntervalAndResetAsync(bpm.Value, (int)maxCount.Value, (int)maxSubCount.Value);
+            timer.SetTempoAndReset(bpm.Value, (int)maxCount.Value, (int)maxSubCount.Value);
         }
 
-        private void Timer_Tick(MetroTimer sender)
+        private async Task Timer_Tick(MetroTimer sender)
         {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 CountUpdate();
             });
 
         }
-        private void CanvasTimer_Tick(MetroTimer sender, bool onTick)
+
+        private async Task CanvasTimer_Tick(MetroTimer sender, bool onTick)
         {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            var t = MathF.PI * (float)sender.Bar;
+            var x = MathF.Sin(t);
+
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                var t = MathF.PI * (float)(sender.Elapsed.TotalMilliseconds / sender.Interval / maxCount.Value);
-                var x = MathF.Sin(t);
                 SetCanvasPosition(circle, 90.0f * x, 0);
 
-                var x2 = onTick ? 0 : 1;
-
-                if(sender.TimeCount == sender.MaxCount-1)
+                if (onTick)
                 {
-                    CanvasBack.Color = ColorMix(Colors.White, Colors.Black, x2);
+                    CanvasBack.Color = (sender.TimeCount == sender.MaxCount - 1) ? Colors.White : Colors.Black;
+                    circleFill.Color = Colors.Red;
+                    circleLine.Color = Colors.Pink;
                 }
                 else
                 {
                     CanvasBack.Color = Colors.Black;
-                }
-
-                circleFill.Color = ColorMix(Colors.Red, Colors.Green, x2);
-                circleLine.Color = ColorMix(Colors.Pink, Colors.LightGreen, x2);
-
-                Color ColorMix(Color c1, Color c2, float v)
-                {
-                    var v2 = 1.0f - v;
-                    var a = c1.A * v2 + c2.A * v;
-                    var r = c1.R * v2 + c2.R * v;
-                    var g = c1.G * v2 + c2.G * v;
-                    var b = c1.B * v2 + c2.B * v;
-                    return Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
+                    circleFill.Color = Colors.Green;
+                    circleLine.Color = Colors.LightGreen;
                 }
             });
         }

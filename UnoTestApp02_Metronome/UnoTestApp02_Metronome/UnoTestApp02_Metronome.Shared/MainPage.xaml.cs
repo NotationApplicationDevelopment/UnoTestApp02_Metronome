@@ -112,12 +112,21 @@ namespace UnoTestApp02_Metronome
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 SetCanvasPosition(circle, 90.0f * x, 0);
-
+                bool isLast = sender.TimeCount == sender.MaxCount - 1;
                 if (onTick)
                 {
-                    CanvasBack.Color = (sender.TimeCount == sender.MaxCount - 1) ? Colors.White : Colors.Black;
-                    circleFill.Color = Colors.Red;
-                    circleLine.Color = Colors.Pink;
+                    if (isLast)
+                    {
+                        CanvasBack.Color = Colors.White;
+                        circleFill.Color = Colors.Red;
+                        circleLine.Color = Colors.Pink;
+                    }
+                    else
+                    {
+                        CanvasBack.Color = Colors.Black;
+                        circleFill.Color = Colors.Blue;
+                        circleLine.Color = Colors.LightBlue;
+                    }
                 }
                 else
                 {

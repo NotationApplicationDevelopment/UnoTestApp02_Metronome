@@ -18,14 +18,22 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MyUIElementAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MetroTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPlatformData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -37,7 +45,13 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se1.mp3" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se2.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se1a.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se1b.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se2a.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se2b.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se3a.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se3b.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se4a.mp3" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Sounds\se4b.mp3" />
   </ItemGroup>
 </Project>

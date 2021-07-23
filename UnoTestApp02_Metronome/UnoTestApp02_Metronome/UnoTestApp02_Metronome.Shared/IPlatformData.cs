@@ -6,6 +6,8 @@ namespace UnoTestApp02_Metronome
     {
         string PlatformName { get; }
 
-        void PlaySound(Uri uri);
+        bool LoadSound(Uri uri);
+
+        void PlaySound(Uri uri, double volume);
     }
 }

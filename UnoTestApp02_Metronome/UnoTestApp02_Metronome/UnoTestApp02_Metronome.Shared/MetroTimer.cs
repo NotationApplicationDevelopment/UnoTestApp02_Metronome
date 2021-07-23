@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Windows.UI.Core;
 
 namespace UnoTestApp02_Metronome
 {

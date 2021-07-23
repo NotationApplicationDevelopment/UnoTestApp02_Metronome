@@ -1,6 +1,16 @@
 ﻿var root = ""
 var musics = {}
-function playSound(text) {
+function playSound(text, volume) {
+
+    if (text in musics) {
+        var music = musics[text];
+        music.currentTime = 0;
+        music.volume = volume * 0.01;
+        music.play();
+    }
+}
+
+function loadSound(text) {
     //get folder of script
     if (root == "") {
 
@@ -16,14 +26,11 @@ function playSound(text) {
     }
 
     if (text in musics) {
-        var music = musics[text];
-        music.currentTime = 0;
-        music.play();
+        return true;
     }
     else {
         var music = new Audio(root + text);
-
-        music.play();  // 再生
         musics[text] = music;
+        return music.readyState != HAVE_NOTHING;
     }
 }

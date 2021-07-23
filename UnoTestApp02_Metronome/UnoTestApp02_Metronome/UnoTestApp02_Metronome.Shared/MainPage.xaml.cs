@@ -36,6 +36,8 @@ namespace UnoTestApp02_Metronome
             timer.OnUpdate += CanvasTimer_Tick;
 
             mainButton.Click += MainButton_Click;
+            settingButton.Click += SettingButton_Click;
+
             maxCount.ValueChanged += MaxCount_ValueChanged;
             maxSubCount.ValueChanged += MaxCount_ValueChanged;
             bpm.ValueChanged += Bpm_ValueChanged;
@@ -49,13 +51,15 @@ namespace UnoTestApp02_Metronome
 
             bottomInfo.Text = platformData.PlatformName;
             SetTempo();
+            settingPage.Volume = 50;
+            settingPage.SoundType = 0;
 
 
-            Task.Run(async () => {
+            _ = Task.Run(async () => {
 
                 await Task.Delay(100);
 
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
                     SetCanvasPosition(circleBack, 0, 0);
                     SetCanvasPosition(circle, 0, 0);
@@ -64,11 +68,34 @@ namespace UnoTestApp02_Metronome
                     circle.Stroke = circleLine;
                     canvas.Background = CanvasBack;
 
+                    for (int i = 0; i < 4; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            var state = platformData.LoadSound(GetSoundUri(i, true));
+                            state &= platformData.LoadSound(GetSoundUri(i, false));
+                            if (state) { break; }
+                            await Task.Delay(100);
+                        }
+                    }
                 });
-
             });
         }
 
+        private Uri GetSoundUri(int index, bool main)
+        {
+            return new Uri($"ms-appx:///Assets/Sounds/se{index + 1}{(main ? "a" : "b")}.mp3");
+        }
+
+        private Uri GetSoundUri(bool main)
+        {
+            return GetSoundUri(settingPage.SoundType, main);
+        }
+
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            _ = settingPage.Open();
+        }
 
         private void SetCanvasPosition(Ellipse circle, float x, float y)
         {
@@ -140,13 +167,16 @@ namespace UnoTestApp02_Metronome
 
         private void CountUpdate()
         {
-            if(timer.TimeCount == 0)
+            Uri a = GetSoundUri(true);
+            Uri b = GetSoundUri(false);
+
+            if (timer.TimeCount == 0)
             {
-                platformData.PlaySound(new Uri("ms-appx:///Assets/Sounds/se1.mp3"));
+                platformData.PlaySound(a, settingPage.Volume);
             }
             else
             {
-                platformData.PlaySound(new Uri("ms-appx:///Assets/Sounds/se2.mp3"));
+                platformData.PlaySound(b, settingPage.Volume * 0.8f);
             }
 
             count.Text = (timer.TimeCount + 1).ToString();

@@ -7,58 +7,76 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+    <Grid Width="230" Height="360" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <StackPanel Width="230" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
-    <StackPanel HorizontalAlignment="Center" 
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
-        <TextBlock x:Name="title" 
+            <TextBlock x:Name="title" 
                    Text="Metronome" 
                    Margin="0" 
                    FontSize="30"
                    TextAlignment="Center"/>
-        
-        <TextBlock x:Name="count" 
+            <TextBlock x:Name="count" 
                    Text="-" 
                    Margin="0" 
                    FontSize="10"
                    TextAlignment="Center"/>
-        
-        <Canvas x:Name="canvas" Margin="10" Height="80" Width="210" Background="Black" >
 
-            <Ellipse x:Name="circleBack" Height="70" Width="5" Stroke="Gray" />
-            <Ellipse x:Name="circle" Height="50" Width="10" Fill="Green" Stroke="DarkGreen" />
+            <Canvas x:Name="canvas" Margin="10" Height="80" Width="210" Background="Black" >
 
-        </Canvas>
+                <Ellipse x:Name="circleBack" Height="70" Width="5" Stroke="Gray" />
+                <Ellipse x:Name="circle" Height="50" Width="10" Fill="Green" Stroke="DarkGreen" />
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+            </Canvas>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-            <TextBlock Text="bpm:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
-            <muxc:NumberBox x:Name="bpm" Value="120" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="9999" MaxWidth="120"/>
+                <TextBlock Text="bpm:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+                <muxc:NumberBox x:Name="bpm" Value="120" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="9999" MaxWidth="120"/>
 
-        </StackPanel>
-        
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            
-            <TextBlock Text="time:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
-            <muxc:NumberBox x:Name="maxCount" Value="4" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
-            <TextBlock Text="/" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
-            <muxc:NumberBox x:Name="maxSubCount" Value="4"  Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
 
-        </StackPanel>
-        
-        <Button x:Name="mainButton"
+                <TextBlock Text="time:" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+                <muxc:NumberBox x:Name="maxCount" Value="4" Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
+                <TextBlock Text="/" Margin="2" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+                <muxc:NumberBox x:Name="maxSubCount" Value="4"  Margin="2" VerticalAlignment="Center" Minimum="1" Maximum="99" MaxWidth="120"/>
+
+            </StackPanel>
+
+            <Button x:Name="mainButton"
                 ClickMode="Release"
                 Content="Start"
                 Margin="10" 
                 HorizontalAlignment="Center"/>
+        </StackPanel>
 
-        <TextBlock x:Name="bottomInfo" 
-                   Text="" 
-                   Margin="10" 
+        <Grid Width="230" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+
+            <TextBlock x:Name="bottomInfo" 
+                   Text="message" 
+                   Margin="5" 
                    FontSize="10"
-                   TextAlignment="Center"/>
-    </StackPanel>
+                   TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                <AppBarButton x:Name="settingButton"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Top"
+                          Background="DarkGray" 
+                          Icon="Setting" 
+                          Label="" 
+                          Height="60" Width="50" 
+                          Margin="0" FontSize="20"/>
+            
+        </Grid>
+
+        <Frame x:Name="subFrame">
+            <local:SettingsPage x:Name="settingPage" />
+        </Frame>
+    </Grid>
 </Page>

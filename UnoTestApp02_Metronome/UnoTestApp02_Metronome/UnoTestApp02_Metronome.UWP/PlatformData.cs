@@ -11,23 +11,30 @@ namespace UnoTestApp02_Metronome.UWP
 
         public string PlatformName => "Universal Windows Platform";
 
-        public void PlaySound(Uri uri)
+        public bool LoadSound(Uri uri)
         {
-            if(mediaPlayers.TryGetValue(uri.AbsoluteUri, out MediaPlayer mp))
+            if (mediaPlayers.ContainsKey(uri.AbsoluteUri)) { return true; }
+
+            MediaSource src = MediaSource.CreateFromUri(uri);
+
+            if(src.State == MediaSourceState.Failed) { return false; }
+
+            mediaPlayers[uri.AbsoluteUri] = new MediaPlayer()
+            {
+                Source = MediaSource.CreateFromUri(uri)
+            };
+
+            return true;
+        }
+
+        public void PlaySound(Uri uri, double volume)
+        {
+            if (mediaPlayers.TryGetValue(uri.AbsoluteUri, out MediaPlayer mp))
             {
                 mp.PlaybackSession.Position = TimeSpan.Zero;
+                mp.Volume = volume * 0.01;
+                mp.Play();
             }
-            else
-            {
-                mp = new MediaPlayer
-                {
-                    Source = MediaSource.CreateFromUri(uri),
-                    Volume = 0.7
-                };
-                mediaPlayers.Add(uri.AbsoluteUri, mp);
-            }
-
-            mp.Play();
         }
     }
 }

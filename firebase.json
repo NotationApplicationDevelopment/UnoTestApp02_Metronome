@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "UnoTestApp02_Metronome/UnoTestApp02_Metronome/UnoTestApp02_Metronome.Wasm/bin/Release/net5.0/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -19,8 +19,6 @@ namespace UnoTestApp02_Metronome
         }
 
         static readonly Dictionary<UIElement, IntarnalActionInfo> infos = new Dictionary<UIElement, IntarnalActionInfo>();
-        static DateTime dragStartTime;
-        static DateTime dragEndTime;
 
         public static void MyDoubleTapped(this UIElement element, Action<object, PointerRoutedEventArgs, double> callback)
         {
